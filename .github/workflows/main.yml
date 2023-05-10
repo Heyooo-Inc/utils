@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  cov:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@master
+        with:
+          node-version: 16
+      - name: Coverage
+        run: |
+          npm install
+          npm run cov
+
+  publish:
+    runs-on: ubuntu-latest
+    if: "contains(github.event.head_commit.message, 'release:')"
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@master
+        with:
+          node-version: 16
+      - name: Publish
+        run: |
+          npm install
+          npm run build
+          cp package.json ./dist
+          cd ./dist
+          npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
+          npm publish --access public --ignore-scripts
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
