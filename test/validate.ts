@@ -1,4 +1,5 @@
 import {
+  hasOwnProp,
   isBlob,
   isBool,
   isDate,
@@ -24,6 +25,10 @@ import {
 } from '../src/validate'
 
 describe('validate', () => {
+  test('null does not have own prop', () => {
+    expect(hasOwnProp(null, 'x')).toBe(false)
+  })
+
   test("' ' is empty", () => {
     expect(isEmpty(' ')).toBe(true)
   })

@@ -3,16 +3,35 @@
 ### Deep clone a object
 
 ```
-import { cloneDeep } from '@heyooo-inc/utils'
+import { deepClone } from '@heyooo-inc/utils'
 
 const obj = {
   x: 1
 }
 
-const cloned = cloneDeep(obj)
+const cloned = deepClone(obj)
 
 cloned !== obj     // => true
 cloned.x === obj.x // => true
+```
+
+### Deep merge objects
+
+```
+import { deepMerge } from '@heyooo-inc/utils'
+
+const obj = {
+  x: 1,
+  y: {
+    a: true
+  }
+}
+
+const merged = deepMerge(obj, { x: 3 })
+
+merged !== obj      // => true
+merged.x === 3      // => true
+merged.y.a === true // => true
 ```
 
 ### Pick some properties from a object

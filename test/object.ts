@@ -1,5 +1,4 @@
-import { cloneDeep, pickObject } from '../src/object'
-import { hasOwnProp } from '../src/validate'
+import { deepClone, deepMerge, pickObject } from '../src/object'
 
 const obj = {
   number: 1,
@@ -14,21 +13,44 @@ const obj = {
   nil: null
 }
 
-describe('clone object', () => {
-  test('null does not have own prop', () => {
-    expect(hasOwnProp(null, 'x')).toBe(false)
+describe('merge object', () => {
+  test('cannot merge null', () => {
+    expect(deepMerge(obj, null as any)).toBe(undefined)
   })
 
+  test('cannot merge array', () => {
+    expect(deepMerge(obj, [] as any)).toBe(undefined)
+  })
+
+  test('deep merge', () => {
+    const merged = deepMerge(obj, { number: 100, object: { y: 'y2' } } as any)!
+
+    expect(merged !== obj).toBe(true)
+    expect(merged.array !== obj.array).toBe(true)
+    expect(merged.object !== obj.object).toBe(true)
+    expect(merged.number).toBe(100)
+    expect(merged.array).toStrictEqual([2, 3])
+    expect(merged.object).toStrictEqual({
+      x: 'x',
+      y: 'y2',
+      z: {
+        p: true
+      }
+    })
+  })
+})
+
+describe('clone object', () => {
   test('cannot clone null', () => {
-    expect(cloneDeep(null as unknown as Object)).toBe(null)
+    expect(deepClone(null as unknown as Object)).toBe(null)
   })
 
   test('cannot clone undefined', () => {
-    expect(cloneDeep(undefined as unknown as Object)).toBe(undefined)
+    expect(deepClone(undefined as unknown as Object)).toBe(undefined)
   })
 
   test('deep clone', () => {
-    const cloned = cloneDeep(obj)
+    const cloned = deepClone(obj)
     const target = JSON.parse(JSON.stringify(obj))
 
     expect(cloned === obj).toBe(false)
@@ -36,22 +58,41 @@ describe('clone object', () => {
     expect(cloned.object === obj.object).toBe(false)
     expect(cloned).toStrictEqual(target)
   })
+
+  test('deep clone objects with circular references', function () {
+    // @ts-ignore
+    globalThis.structuredClone = null
+
+    const obj2: any = {
+      foo: { b: { c: { d: {} } } },
+      bar: {}
+    }
+
+    obj2.foo.b.c.d = obj2
+    obj2.bar.b = obj2.foo.b
+
+    const cloned = deepClone(obj2)
+
+    expect(cloned.bar.b === cloned.foo.b && cloned === cloned.foo.b.c.d && cloned !== obj2).toBe(
+      true
+    )
+  })
 })
 
-describe('pickObject object', () => {
-  test('cannot pickObject null', () => {
+describe('pick object', () => {
+  test('cannot pick object null', () => {
     expect(pickObject(null as any, ['x'])).toBe(undefined)
   })
 
-  test('cannot pickObject undefined', () => {
+  test('cannot pick object undefined', () => {
     expect(pickObject(undefined as any, ['x'])).toBe(undefined)
   })
 
-  test('cannot pickObject array', () => {
+  test('cannot pick object array', () => {
     expect(pickObject([] as any, ['x'])).toBe(undefined)
   })
 
-  test('pickObject object', () => {
+  test('pick object', () => {
     const picked = pickObject<any>(obj, ['array', ['object', 'alias'], 'nil'])
 
     expect(picked === obj).toBe(false)
@@ -61,7 +102,7 @@ describe('pickObject object', () => {
     expect(picked.nil).toBe(null)
   })
 
-  test('dont pickObject nil value', () => {
+  test('dont pick nil value from a object', () => {
     const picked = pickObject<any>(obj, ['nil'], {
       ignoreNil: true
     })
@@ -69,9 +110,9 @@ describe('pickObject object', () => {
     expect(picked.nil).toBe(undefined)
   })
 
-  test('pickObject width deep clone', () => {
+  test('pick width deep clone', () => {
     const picked = pickObject<any>(obj, ['array', 'object'], {
-      cloneDeep: true
+      deepClone: true
     })
 
     expect(picked.array === obj.array).toBe(false)

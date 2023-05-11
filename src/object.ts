@@ -1,16 +1,34 @@
-import _cloneDeep from 'lodash.clonedeep'
-import { isArray, isNil, isPlainObject } from './validate'
+import cloneDeep from 'lodash.clonedeep'
+import { isArray, isNil, isObject, isPlainObject } from './validate'
 
-export const cloneDeep = _cloneDeep
+import merge, { Options } from 'deepmerge'
+
+export function deepMerge<T>(x: Partial<T>, y: Partial<T>, options?: Options): T | undefined {
+  if (isObject(x) && isObject(y)) {
+    try {
+      return merge(x, y, options)
+    } catch {}
+  }
+}
+
+export function deepClone<T extends Object>(value: T): T {
+  // jsdom don't support `structuredClone` testing
+  // see https://github.com/jsdom/jsdom/issues/3363
+  if (globalThis.structuredClone) {
+    return globalThis.structuredClone(value)
+  }
+
+  return cloneDeep(value)
+}
 
 export interface PickOptions {
   ignoreNil?: boolean
-  cloneDeep?: boolean
+  deepClone?: boolean
 }
 
 export const DEFAULT_PICK_OPTIONS: PickOptions = {
   ignoreNil: false,
-  cloneDeep: false
+  deepClone: false
 }
 
 export function pickObject<T extends Object>(
@@ -43,8 +61,8 @@ export function pickObject<T extends Object>(
       if (opt.ignoreNil) {
         continue
       }
-    } else if (opt.cloneDeep) {
-      value = cloneDeep(value)
+    } else if (opt.deepClone) {
+      value = deepClone(value as unknown as Object) as T[keyof T]
     }
 
     to[alias || key] = value
