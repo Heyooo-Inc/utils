@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@master
       - uses: actions/setup-node@master
         with:
-          node-version: 16
+          node-version: 17
       - name: Coverage
         run: |
           npm install
@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@master
       - uses: actions/setup-node@master
         with:
-          node-version: 16
+          node-version: 17
       - name: Publish
         run: |
           npm install
