@@ -1,4 +1,4 @@
-import { deepClone, deepMerge, pickObject } from '../src/object'
+import { deepClone, deepMerge, pickObject, excludeObject } from '../src/object'
 
 const obj = {
   number: 1,
@@ -119,5 +119,49 @@ describe('pick object', () => {
     expect(picked.object === obj.object).toBe(false)
     expect(picked.array).toStrictEqual(obj.array)
     expect(picked.object).toStrictEqual(obj.object)
+  })
+})
+
+describe('exclude object', () => {
+  test('cannot exclude object null', () => {
+    expect(excludeObject(null as any, ['x'])).toBe(undefined)
+  })
+
+  test('cannot exclude object undefined', () => {
+    expect(excludeObject(undefined as any, ['x'])).toBe(undefined)
+  })
+
+  test('cannot exclude object array', () => {
+    expect(excludeObject([] as any, ['x'])).toBe(undefined)
+  })
+
+  test('exclude object', () => {
+    const excluded = excludeObject<any>(obj, ['array', 'object'])
+
+    expect(excluded === obj).toBe(false)
+    expect(excluded.number).toBe(1)
+    expect(excluded.array).toBe(undefined)
+    expect(excluded.object).toBe(undefined)
+    expect(excluded.nil).toBe(null)
+  })
+
+  test('exclude nil value from a object', () => {
+    const excluded = excludeObject<any>(obj, ['array', 'object'], {
+      ignoreNil: true
+    })
+
+    expect(excluded.nil).toBe(undefined)
+  })
+
+  test('exclude width deep clone', () => {
+    const excluded = excludeObject<any>(obj, ['number'], {
+      deepClone: true
+    })
+
+    expect(excluded.array === obj.array).toBe(false)
+    expect(excluded.object === obj.object).toBe(false)
+    expect(excluded.array).toStrictEqual(obj.array)
+    expect(excluded.object).toStrictEqual(obj.object)
+    expect(excluded.number).toBe(undefined)
   })
 })

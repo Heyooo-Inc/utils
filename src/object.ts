@@ -70,3 +70,18 @@ export function pickObject<T extends Object>(
 
   return to
 }
+
+export function excludeObject<T extends Object>(
+  target: T,
+  fields: Array<keyof T>,
+  options?: PickOptions
+): T | undefined {
+  if (!isPlainObject(target)) {
+    return
+  }
+
+  const allFields = Object.keys(target) as Array<keyof T>
+  const includedFields = allFields.filter(f => !fields.includes(f))
+
+  return pickObject(target, includedFields, options)
+}
