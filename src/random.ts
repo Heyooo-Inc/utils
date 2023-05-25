@@ -2,10 +2,10 @@ import { isFunction } from './validate'
 
 const NUMERIC = '0123456789'
 const HEXIC = '0123456789abcdef'
-const ALPHA = 'abcdefghijklmnopqrstuvwxyz'
+const ALPHA = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 const ALPHA_NUMERIC = ALPHA + NUMERIC
 
-function randomSeed() {
+function _random() {
   if (globalThis.crypto && isFunction(globalThis.crypto.getRandomValues)) {
     const buffer = new Uint32Array(1)
     globalThis.crypto.getRandomValues(buffer)
@@ -21,7 +21,7 @@ export function random(len = 6, alphabet = ALPHA_NUMERIC): string {
   const alphabetLength = alphabet.length
 
   for (let i = 0; i < len; i++) {
-    str += alphabet.charAt(Math.floor(randomSeed() * alphabetLength))
+    str += alphabet.charAt(Math.floor(_random() * alphabetLength))
   }
 
   return str
@@ -40,5 +40,5 @@ export function randomNumeric(len: number): string {
 }
 
 export function randomNumber(min: number, max: number): number {
-  return Math.ceil(randomSeed() * (max - min) + min)
+  return Math.ceil(_random() * (max - min) + min)
 }

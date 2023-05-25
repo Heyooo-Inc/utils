@@ -47,4 +47,10 @@ describe('localStorage', () => {
     store.clear()
     expect(store.length).toBe(0)
   })
+
+  test('session storage', () => {
+    Store.sessionStorage.setItem('key1', 'value1')
+
+    expect(Store.sessionStorage.getItem('key1')).toBe('value1')
+  })
 })

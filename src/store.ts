@@ -1,6 +1,7 @@
 import { isValid, isNil, isType } from './validate'
 
 let localStorageStore: Store | null = null
+let sessionStorageStore: Store | null = null
 
 export class Store {
   private readonly storage: Storage
@@ -15,6 +16,14 @@ export class Store {
     }
 
     return localStorageStore
+  }
+
+  static get sessionStorage() {
+    if (!sessionStorageStore) {
+      sessionStorageStore = new Store(window.sessionStorage)
+    }
+
+    return sessionStorageStore
   }
 
   get length() {
