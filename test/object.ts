@@ -65,17 +65,21 @@ describe('clone object', () => {
 
     const obj2: any = {
       foo: { b: { c: { d: {} } } },
-      bar: {}
+      bar: {},
+      zoo: undefined
     }
 
     obj2.foo.b.c.d = obj2
     obj2.bar.b = obj2.foo.b
+    obj2.zoo = obj2.foo.b
 
     const cloned = deepClone(obj2)
 
-    expect(cloned.bar.b === cloned.foo.b && cloned === cloned.foo.b.c.d && cloned !== obj2).toBe(
-      true
-    )
+    expect(cloned.bar.b === cloned.foo.b).toBe(false)
+    expect(cloned.bar.b).toStrictEqual(cloned.foo.b)
+    expect(obj2.zoo === obj2.foo.b).toBe(true)
+    expect(cloned === cloned.foo.b.c.d).toBe(true)
+    expect(cloned !== obj2).toBe(true)
   })
 })
 

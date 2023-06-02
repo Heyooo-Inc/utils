@@ -1,4 +1,4 @@
-import cloneDeep from 'lodash.clonedeep'
+import rfdc from 'rfdc'
 import { isArray, isNil, isObject, isPlainObject } from './validate'
 
 import merge, { Options } from 'deepmerge'
@@ -18,7 +18,7 @@ export function deepClone<T extends Object>(value: T): T {
     return globalThis.structuredClone(value)
   }
 
-  return cloneDeep(value)
+  return rfdc({ circles: true })(value)
 }
 
 export interface PickOptions {
