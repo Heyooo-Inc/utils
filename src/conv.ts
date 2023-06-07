@@ -12,11 +12,7 @@ export function toBool(value: unknown, defaults?: boolean): boolean {
   return isTrue(value)
 }
 
-export function toInteger(
-  value: unknown,
-  defaults?: number,
-  maxValue?: number
-): number | undefined {
+export function toInteger(value: unknown, defaults?: number, maxValue?: number): number | undefined {
   let val: number
 
   if (isNumber(value)) {

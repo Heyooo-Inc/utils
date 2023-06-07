@@ -7,8 +7,7 @@ const HOUR = MINUTE * 60
 const DAY = HOUR * 24
 const WEEK = DAY * 7
 const YEAR = DAY * 365
-const REGX =
-  /^(-?(?:\d+)?\.?\d+)(seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)$/i
+const REGX = /^(-?(?:\d+)?\.?\d+)(seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)$/i
 
 export function timestamp(): number {
   return Math.floor(Date.now() / 1e3)
