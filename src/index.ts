@@ -1,3 +1,4 @@
+export * from './axios'
 export * from './byte'
 export * from './conv'
 export * from './date'
