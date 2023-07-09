@@ -21,6 +21,7 @@ export interface OverridedAxiosInstance
 
 export interface CreateAxiosClientConfig<T = any> extends CreateAxiosDefaults<T> {
   retries?: number
+  onError?: (error: any) => any
 }
 
 export function createAxiosClient(config?: CreateAxiosClientConfig): OverridedAxiosInstance {
@@ -35,7 +36,7 @@ export function createAxiosClient(config?: CreateAxiosClientConfig): OverridedAx
       return response.data
     },
     error => {
-      return Promise.reject(error)
+      return config?.onError ? config.onError(error) : Promise.reject(error)
     }
   )
 
