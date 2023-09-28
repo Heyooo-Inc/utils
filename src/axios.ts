@@ -1,4 +1,4 @@
-import Axios, { AxiosInstance, AxiosRequestConfig, CreateAxiosDefaults } from 'axios'
+import Axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, CreateAxiosDefaults } from 'axios'
 import axiosRetry from 'axios-retry'
 
 export interface OverridedAxiosInstance
@@ -21,6 +21,7 @@ export interface OverridedAxiosInstance
 
 export interface CreateAxiosClientConfig<T = any> extends CreateAxiosDefaults<T> {
   retries?: number
+  onResponse?: (response: AxiosResponse<T>) => any
   onError?: (error: any) => any
 }
 
@@ -33,7 +34,7 @@ export function createAxiosClient(config?: CreateAxiosClientConfig): OverridedAx
 
   axiosClient.interceptors.response.use(
     response => {
-      return response.data
+      return config?.onResponse ? config.onResponse(response) : response.data
     },
     error => {
       return config?.onError ? config.onError(error) : Promise.reject(error)
