@@ -9,7 +9,7 @@ describe('http-error', () => {
     const badRequestError = toJSON(new BadRequestError())
 
     expect(badRequestError.status).toBe(400)
-    expect(badRequestError.code).toBe('BAD_GATEWAY')
-    expect(badRequestError.message).toBe('Bad Gateway')
+    expect(badRequestError.response.code).toBe('BAD_REQUEST')
+    expect(badRequestError.message).toBe('Bad request')
   })
 })
