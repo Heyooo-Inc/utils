@@ -8,7 +8,7 @@ export class HttpError extends Error {
   }
 
   private init() {
-    this.name = this.constructor.name
+    this.name = 'HttpError'
 
     if (isString(this.response)) {
       this.message = this.response as string
@@ -37,13 +37,13 @@ export class HttpError extends Error {
 }
 
 export class BadGatewayError extends HttpError {
-  constructor(message = 'Bad Gateway', errors?: any[], code = 'BAD_GATEWAY') {
+  constructor(message = 'Bad gateway', errors?: any[], code = 'BAD_GATEWAY') {
     super(HttpError.createBody(code, message, errors), HttpStatus.BAD_GATEWAY)
   }
 }
 
 export class BadRequestError extends HttpError {
-  constructor(message = 'Bad Request', errors?: any[], code = 'BAD_REQUEST') {
+  constructor(message = 'Bad request', errors?: any[], code = 'BAD_REQUEST') {
     super(HttpError.createBody(code, message, errors), HttpStatus.BAD_REQUEST)
   }
 }
@@ -61,7 +61,7 @@ export class ForbiddenError extends HttpError {
 }
 
 export class GatewayTimeoutError extends HttpError {
-  constructor(message = 'Gateway Timeout', errors?: any[], code = 'GATEWAY_TIMEOUT') {
+  constructor(message = 'Gateway timeout', errors?: any[], code = 'GATEWAY_TIMEOUT') {
     super(HttpError.createBody(code, message, errors), HttpStatus.GATEWAY_TIMEOUT)
   }
 }
@@ -73,7 +73,7 @@ export class GoneError extends HttpError {
 }
 
 export class HttpVersionNotSupportedError extends HttpError {
-  constructor(message = 'HTTP Version Not Supported', errors?: any[], code = 'HTTP_VERSION_NOT_SUPPORTED') {
+  constructor(message = 'HTTP version not supported', errors?: any[], code = 'HTTP_VERSION_NOT_SUPPORTED') {
     super(HttpError.createBody(code, message, errors), HttpStatus.HTTP_VERSION_NOT_SUPPORTED)
   }
 }
@@ -85,13 +85,13 @@ export class ImATeapotError extends HttpError {
 }
 
 export class InternalServerErrorError extends HttpError {
-  constructor(message = 'Internal Server Error', errors?: any[], code = 'INTERNAL_SERVER_ERROR') {
+  constructor(message = 'Internal server error', errors?: any[], code = 'INTERNAL_SERVER_ERROR') {
     super(HttpError.createBody(code, message, errors), HttpStatus.INTERNAL_SERVER_ERROR)
   }
 }
 
 export class MethodNotAllowedError extends HttpError {
-  constructor(message = 'Method Not Allowed', errors?: any[], code = 'METHOD_NOT_ALLOWED') {
+  constructor(message = 'Method not allowed', errors?: any[], code = 'METHOD_NOT_ALLOWED') {
     super(HttpError.createBody(code, message, errors), HttpStatus.METHOD_NOT_ALLOWED)
   }
 }
@@ -103,43 +103,43 @@ export class MisdirectedError extends HttpError {
 }
 
 export class NotAcceptableError extends HttpError {
-  constructor(message = 'Not Acceptable', errors?: any[], code = 'NOT_ACCEPTABLE') {
+  constructor(message = 'Not acceptable', errors?: any[], code = 'NOT_ACCEPTABLE') {
     super(HttpError.createBody(code, message, errors), HttpStatus.NOT_ACCEPTABLE)
   }
 }
 
 export class NotFoundError extends HttpError {
-  constructor(message = 'Not Found', errors?: any[], code = 'NOT_FOUND') {
+  constructor(message = 'Not found', errors?: any[], code = 'NOT_FOUND') {
     super(HttpError.createBody(code, message, errors), HttpStatus.NOT_FOUND)
   }
 }
 
 export class NotImplementedError extends HttpError {
-  constructor(message = 'Not Implemented', errors?: any[], code = 'NOT_IMPLEMENTED') {
+  constructor(message = 'Not implemented', errors?: any[], code = 'NOT_IMPLEMENTED') {
     super(HttpError.createBody(code, message, errors), HttpStatus.NOT_IMPLEMENTED)
   }
 }
 
 export class PayloadTooLargeError extends HttpError {
-  constructor(message = 'Payload Too Large', errors?: any[], code = 'PAYLOAD_TOO_LARGE') {
+  constructor(message = 'Payload too large', errors?: any[], code = 'PAYLOAD_TOO_LARGE') {
     super(HttpError.createBody(code, message, errors), HttpStatus.PAYLOAD_TOO_LARGE)
   }
 }
 
 export class PreconditionFailedError extends HttpError {
-  constructor(message = 'Precondition Failed', errors?: any[], code = 'PRECONDITION_FAILED') {
+  constructor(message = 'Precondition failed', errors?: any[], code = 'PRECONDITION_FAILED') {
     super(HttpError.createBody(code, message, errors), HttpStatus.PRECONDITION_FAILED)
   }
 }
 
 export class RequestTimeoutError extends HttpError {
-  constructor(message = 'Request Timeout', errors?: any[], code = 'REQUEST_TIMEOUT') {
+  constructor(message = 'Request timeout', errors?: any[], code = 'REQUEST_TIMEOUT') {
     super(HttpError.createBody(code, message, errors), HttpStatus.REQUEST_TIMEOUT)
   }
 }
 
 export class ServiceUnavailableError extends HttpError {
-  constructor(message = 'Service Unavailable', errors?: any[], code = 'SERVICE_UNAVAILABLE') {
+  constructor(message = 'Service unavailable', errors?: any[], code = 'SERVICE_UNAVAILABLE') {
     super(HttpError.createBody(code, message, errors), HttpStatus.SERVICE_UNAVAILABLE)
   }
 }
@@ -151,13 +151,13 @@ export class UnauthorizedError extends HttpError {
 }
 
 export class UnprocessableEntityError extends HttpError {
-  constructor(message = 'Unprocessable Entity', errors?: any[], code = 'UNPROCESSABLE_ENTITY') {
+  constructor(message = 'Unprocessable entity', errors?: any[], code = 'UNPROCESSABLE_ENTITY') {
     super(HttpError.createBody(code, message, errors), HttpStatus.UNPROCESSABLE_ENTITY)
   }
 }
 
 export class UnsupportedMediaTypeError extends HttpError {
-  constructor(message = 'Unsupported Media Type', errors?: any[], code = 'UNSUPPORTED_MEDIA_TYPE') {
+  constructor(message = 'Unsupported media type', errors?: any[], code = 'UNSUPPORTED_MEDIA_TYPE') {
     super(HttpError.createBody(code, message, errors), HttpStatus.UNSUPPORTED_MEDIA_TYPE)
   }
 }
