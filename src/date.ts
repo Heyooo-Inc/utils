@@ -10,7 +10,7 @@ const YEAR = DAY * 365
 const REGX = /^(-?(?:\d+)?\.?\d+)(seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)$/i
 
 export function timestamp(): number {
-  return Math.floor(Date.now() / 1e3)
+  return Math.floor(Date.now() / 1_000)
 }
 
 export function toSeconds(timeString: string): number | undefined {

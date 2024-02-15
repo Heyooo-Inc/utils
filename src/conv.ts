@@ -55,7 +55,7 @@ export function toJSON<T extends object>(text: unknown, defaults?: T): T | undef
     }
   }
 
-  if (defaults && !value) {
+  if (!!defaults && !value) {
     value = defaults
   }
 
