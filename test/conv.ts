@@ -1,4 +1,4 @@
-import { toBool, toInteger, toFloat, toJSON } from '../src/conv'
+import { toBool, toInteger, toFloat, toJSON, toIntlNumber, toDuration } from '../src/conv'
 
 describe('convert', () => {
   test('bool', () => {
@@ -35,5 +35,18 @@ describe('convert', () => {
     expect(toJSON(null as any)).toBe(undefined)
     expect(toJSON('x=y', {})).toStrictEqual({})
     expect(toJSON(JSON.stringify(obj))).toStrictEqual(obj)
+  })
+
+  test('intlNumber', () => {
+    expect(toIntlNumber(1200)).toBe('1.2K')
+    expect(toIntlNumber(12_000)).toBe('12K')
+    expect(toIntlNumber(12_000_000)).toBe('12M')
+  })
+
+  test('duration', () => {
+    expect(toDuration(30)).toBe('30s')
+    expect(toDuration(60, { padNumber: true })).toBe('01m 00s')
+    expect(toDuration(60, { hideOnZeroValue: true })).toBe('1m')
+    expect(toDuration(3760)).toBe('1h 2m 40s')
   })
 })

@@ -61,3 +61,83 @@ export function toJSON<T extends object>(text: unknown, defaults?: T): T | undef
 
   return value
 }
+
+const THOUSAND = 1_000
+const HUNDRED_THOUSAND = 100_000
+const MILLION = 1_000_000
+const HUNDRED_MILLION = 100_000_000
+const BILLION = 1_000_000_000
+const HUNDRED_BILLION = 100_000_000_000
+const TRILLION = 1_000_000_000_000
+
+export function toIntlNumber(value: number) {
+  if (value >= THOUSAND && value < MILLION) {
+    const thousands = value / THOUSAND
+
+    if (thousands === Math.floor(thousands) || value >= HUNDRED_THOUSAND) {
+      return Math.floor(thousands) + 'K'
+    } else {
+      return Math.floor(thousands * 10) / 10 + 'K'
+    }
+  } else if (value >= MILLION && value < BILLION) {
+    const millions = value / MILLION
+
+    if (millions === Math.floor(millions) || value >= HUNDRED_MILLION) {
+      return Math.floor(millions) + 'M'
+    } else {
+      return Math.floor(millions * 10) / 10 + 'M'
+    }
+  } else if (value >= BILLION && value < TRILLION) {
+    const billions = value / BILLION
+
+    if (billions === Math.floor(billions) || value >= HUNDRED_BILLION) {
+      return Math.floor(billions) + 'B'
+    } else {
+      return Math.floor(billions * 10) / 10 + 'B'
+    }
+  } else {
+    return value
+  }
+}
+
+interface ToDurationOptions {
+  hideOnZeroValue?: boolean
+  padNumber?: boolean
+  hourUnit?: string
+  minuteUnit?: string
+  secondUnit?: string
+}
+
+function durationPad(num: number, size: number) {
+  return ('000' + num).slice(size * -1)
+}
+
+function getDuration(num: number, unit: string, options?: ToDurationOptions) {
+  if (options?.hideOnZeroValue && num === 0) {
+    return
+  }
+
+  if (options?.padNumber) {
+    return durationPad(num, 2) + unit
+  }
+
+  return num + unit
+}
+
+export function toDuration(value: number, options?: ToDurationOptions) {
+  const hours = Math.floor(value / 60 / 60)
+  const minutes = Math.floor(value / 60) % 60
+  const seconds = Math.floor(value - minutes * 60 - hours * 60 * 60)
+
+  return [
+    hours > 0 ? { num: hours, unit: options?.hourUnit || 'h' } : null,
+    minutes > 0 ? { num: minutes, unit: options?.minuteUnit || 'm' } : null,
+    { num: seconds, unit: options?.secondUnit || 's' }
+  ]
+    .filter(Boolean)
+    .map((d, i) =>
+      getDuration(d!.num, d!.unit, { ...options, hideOnZeroValue: i === 0 ? false : options?.hideOnZeroValue })
+    )
+    .filter(Boolean)
+    .join(' ')
+}
