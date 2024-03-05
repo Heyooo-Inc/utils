@@ -2,7 +2,10 @@ import { HttpStatus } from './http-status'
 import { isObject, isString } from './validate'
 
 export class HttpError extends Error {
-  constructor(private readonly response: string | Record<string, any>, private readonly status: number) {
+  constructor(
+    private readonly response: string | Record<string, any>,
+    private readonly status: number
+  ) {
     super()
     this.init()
   }

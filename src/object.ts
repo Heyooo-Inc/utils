@@ -2,6 +2,12 @@ import rfdc from 'rfdc'
 import { isArray, isNil, isObject, isPlainObject } from './validate'
 
 import merge, { Options } from 'deepmerge'
+import { getProperty, setProperty, hasProperty, deleteProperty } from 'dot-prop'
+
+export const getObjectProperty = getProperty
+export const setObjectProperty = setProperty
+export const hasObjectProperty = hasProperty
+export const deleteObjectProperty = deleteProperty
 
 export function deepMerge<T>(x: Partial<T>, y: Partial<T>, options?: Options): T | undefined {
   if (isObject(x) && isObject(y)) {
@@ -44,18 +50,18 @@ export function pickObject<T extends Object>(
   const to = {} as T
 
   for (const field of fields) {
-    let key = field as keyof T
+    let path = field as keyof T
     let alias: keyof T | undefined
 
     if (isArray(field)) {
-      key = field[0]
+      path = field[0]
 
       if (field.length > 1) {
         alias = field[1] as keyof T
       }
     }
 
-    let value = target[key]
+    let value = getProperty(target, path as string) as T[keyof T]
 
     if (isNil(value)) {
       if (opt.ignoreNil) {
@@ -65,7 +71,7 @@ export function pickObject<T extends Object>(
       value = deepClone(value as unknown as Object) as T[keyof T]
     }
 
-    to[alias || key] = value
+    to[alias || path] = value
   }
 
   return to
