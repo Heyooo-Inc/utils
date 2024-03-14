@@ -1,5 +1,5 @@
 import rfdc from 'rfdc'
-import { isArray, isNil, isObject, isPlainObject } from './validate'
+import { isArray, isNil, isObject, isPlainObject } from './validator'
 
 import merge, { Options } from 'deepmerge'
 import { getProperty, setProperty, hasProperty, deleteProperty } from 'dot-prop'
@@ -11,9 +11,7 @@ export const deleteObjectProperty = deleteProperty
 
 export function deepMerge<T>(x: Partial<T>, y: Partial<T>, options?: Options): T | undefined {
   if (isObject(x) && isObject(y)) {
-    try {
-      return merge(x, y, options)
-    } catch {}
+    return merge(x, y, options)
   }
 }
 

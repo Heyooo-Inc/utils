@@ -24,5 +24,7 @@ test('numeric', () => {
 })
 
 test('math random', () => {
+  // @ts-ignore
+  globalThis.crypto.getRandomValues = null
   expect(/^[0-9a-z]{6}$/i.test(random())).toBe(true)
 })

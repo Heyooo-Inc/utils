@@ -1,8 +1,10 @@
 import {
   hasOwnProp,
+  isBase64,
   isBlob,
   isBool,
   isDate,
+  isEmail,
   isEmpty,
   isEqual,
   isError,
@@ -10,6 +12,7 @@ import {
   isFormData,
   isInt,
   isMap,
+  isMobilePhone,
   isNil,
   isNotEqual,
   isNotNil,
@@ -18,11 +21,13 @@ import {
   isRegExp,
   isSet,
   isSymbol,
+  isURL,
+  isUUID,
   isValid,
   isValidArray,
   isWeakMap,
   isWeakSet
-} from './'
+} from './validator'
 import { expect, test } from 'vitest'
 
 test('null does not have own prop', () => {
@@ -261,4 +266,35 @@ test('new Blob is blob', () => {
 
 test('new File is not blob', () => {
   expect(isBlob(new File([], 'text.txt'))).toBe(false)
+})
+
+test('string is base64', () => {
+  expect(isBase64('aGVsbG8gd29ybGQ=')).toBe(true)
+  expect(isBase64('aGVsbG8gQ=')).toBe(false)
+})
+
+test('string is email', () => {
+  expect(isEmail('user@a.me')).toBe(true)
+  expect(isEmail('a.me')).toBe(false)
+  expect(isEmail('user@me')).toBe(false)
+  expect(isEmail('user@.me')).toBe(false)
+})
+
+test('string is url', () => {
+  expect(isURL('a.me')).toBe(true)
+  expect(isURL('https://a.me', { require_protocol: true })).toBe(true)
+  expect(isURL('a.me', { require_protocol: true })).toBe(false)
+})
+
+test('string is uuid', () => {
+  expect(isUUID('8cf4fccd-e796-5676-9352-57ff9bed87d1')).toBe(true)
+  expect(isUUID('8cf4fcxy-e796-5676-9352-57ff9bed87d1')).toBe(false)
+  expect(isUUID('5676-9352-57ff9bed87d1')).toBe(false)
+})
+
+test('string is mobile phone', () => {
+  expect(isMobilePhone('6463817651')).toBe(true)
+  expect(isMobilePhone('+16463817651')).toBe(true)
+  expect(isMobilePhone('+8617066145991')).toBe(true)
+  expect(isMobilePhone('+16463817651', 'zh-TW')).toBe(false)
 })

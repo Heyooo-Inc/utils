@@ -1,4 +1,5 @@
-import { isValid, isNil, isType } from './validate'
+import { toJSON } from './conv'
+import { isValid, isNil, isType } from './validator'
 
 let localStorageStore: Store | null = null
 let sessionStorageStore: Store | null = null
@@ -38,16 +39,10 @@ export class Store {
     }
   }
 
-  getItem<T>(key: string, defaults?: T) {
+  getItem<T>(key: string, defaults?: T): T | undefined {
     const text = this.storage.getItem(key)
 
-    if (!isNil(text)) {
-      try {
-        return JSON.parse(text!) as T
-      } catch {}
-    }
-
-    return defaults
+    return toJSON<any>(text, defaults)
   }
 
   removeItem(key: string): void {

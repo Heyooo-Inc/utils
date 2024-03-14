@@ -1,4 +1,5 @@
-import { isBoolean, isEmpty, isNumber, isString, isTrue, isValid } from './validate'
+import { IParseOptions, IStringifyOptions, parse, stringify } from 'qs'
+import { isBoolean, isEmpty, isNumber, isString, isTrue, isValid } from './validator'
 
 export function toBool(value: unknown, defaults?: boolean): boolean {
   if (isEmpty(value)) {
@@ -27,6 +28,8 @@ export function toInteger(value: unknown, defaults?: number, maxValue?: number):
 
   return maxValue ? Math.min(maxValue, val) : val
 }
+
+export const toInt = toInteger
 
 export function toFloat(value: unknown, defaults?: number, maxValue?: number): number | undefined {
   let val: number
@@ -96,7 +99,7 @@ export function toIntlNumber(value: number) {
       return Math.floor(billions * 10) / 10 + 'B'
     }
   } else {
-    return value
+    return `${value}`
   }
 }
 
@@ -140,4 +143,18 @@ export function toDuration(value: number, options?: ToDurationOptions) {
     )
     .filter(Boolean)
     .join(' ')
+}
+
+export function toURLParams<T extends object>(value: string, options?: IParseOptions & { decoder?: undefined }) {
+  return parse(value, options) as T
+}
+
+export function toURLQuery(value: Record<string | number, any>, baseUri?: string, options?: IStringifyOptions) {
+  const query = stringify(value, options)
+
+  if (baseUri) {
+    return baseUri + (baseUri.includes('?') ? '&' : '?') + query
+  }
+
+  return query
 }

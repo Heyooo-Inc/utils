@@ -1,4 +1,16 @@
 import { objectType } from './type'
+import {
+  IsBase64Options,
+  IsEmailOptions,
+  IsURLOptions,
+  isBase64 as _isBase64,
+  isEmail as _isEmail,
+  isURL as _isURL,
+  isUUID as _isUUID,
+  isMobilePhone as _isMobilePhone,
+  MobilePhoneLocale,
+  IsMobilePhoneOptions
+} from 'validator'
 
 const WHITE_SPACE_REGX =
   /^[\s\f\n\r\t\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000\ufeff\x09\x0a\x0b\x0c\x0d\x20\xa0]+$/
@@ -181,6 +193,30 @@ export function isPromise<T = any>(value: unknown): value is Promise<T> {
   return isType(value, 'promise')
 }
 
-export function isBlob<T = any>(value: unknown): value is Promise<T> {
+export function isBlob(value: unknown): boolean {
   return isType(value, 'blob')
+}
+
+export function isBase64(value: unknown, options?: IsBase64Options) {
+  return isValid(value) && _isBase64(value as string, options)
+}
+
+export function isEmail(value: unknown, options?: IsEmailOptions) {
+  return isValid(value) && _isEmail(value as string, options)
+}
+
+export function isURL(value: unknown, options?: IsURLOptions) {
+  return isValid(value) && _isURL(value as string, options)
+}
+
+export function isUUID(value: unknown) {
+  return isValid(value) && _isUUID(value as string)
+}
+
+export function isMobilePhone(
+  value: unknown,
+  locale?: MobilePhoneLocale | MobilePhoneLocale[],
+  options?: IsMobilePhoneOptions
+) {
+  return isValid(value) && _isMobilePhone(value as string, locale, options)
 }

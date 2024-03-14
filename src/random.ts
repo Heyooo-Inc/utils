@@ -1,4 +1,4 @@
-import { isFunction } from './validate'
+import { isFunction } from './validator'
 
 const NUMERIC = '0123456789'
 const HEXIC = '0123456789abcdef'

@@ -1,4 +1,4 @@
-import { isEmpty, isFloat } from './validate'
+import { isEmpty, isFloat } from './validator'
 
 const BYTE_MAP = {
   b: 1,

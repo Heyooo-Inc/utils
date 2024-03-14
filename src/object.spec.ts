@@ -16,6 +16,7 @@ const obj = {
 
 test('cannot merge null', () => {
   expect(deepMerge(obj, null as any)).toBe(undefined)
+  expect(deepMerge('1', false as any)).toBe(undefined)
 })
 
 test('cannot merge array', () => {

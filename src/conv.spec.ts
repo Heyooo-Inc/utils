@@ -1,4 +1,4 @@
-import { toBool, toInteger, toFloat, toJSON, toIntlNumber, toDuration } from './'
+import { toBool, toInteger, toFloat, toJSON, toIntlNumber, toDuration, toURLParams, toURLQuery } from './'
 import { expect, test } from 'vitest'
 
 test('bool', () => {
@@ -38,10 +38,13 @@ test('json', () => {
 })
 
 test('intlNumber', () => {
+  expect(toIntlNumber(12)).toBe('12')
   expect(toIntlNumber(1200)).toBe('1.2K')
   expect(toIntlNumber(12_000)).toBe('12K')
+  expect(toIntlNumber(1_200_000)).toBe('1.2M')
   expect(toIntlNumber(12_000_000)).toBe('12M')
   expect(toIntlNumber(120_000_000)).toBe('120M')
+  expect(toIntlNumber(1_200_000_000)).toBe('1.2B')
   expect(toIntlNumber(12_000_000_000)).toBe('12B')
   expect(toIntlNumber(120_000_000_000)).toBe('120B')
 })
@@ -51,4 +54,23 @@ test('duration', () => {
   expect(toDuration(60, { padNumber: true })).toBe('01m 00s')
   expect(toDuration(60, { hideOnZeroValue: true })).toBe('1m')
   expect(toDuration(3760)).toBe('1h 2m 40s')
+  expect(toDuration(3760, { hourUnit: 'H', minuteUnit: 'M', secondUnit: 'S' })).toBe('1H 2M 40S')
+})
+
+const query = 'category=book&tag%5B0%5D=History%20Fiction&tag%5B1%5D=Classic&page=1&limit=10'
+const params = {
+  category: 'book',
+  tag: ['History Fiction', 'Classic'],
+  page: '1',
+  limit: '10'
+}
+
+test('urlParams', () => {
+  expect(toURLParams(query)).toStrictEqual(params)
+})
+
+test('urlParams', () => {
+  expect(toURLQuery(params)).toBe(query)
+  expect(toURLQuery(params, 'https://a.me?v=1')).toBe(`https://a.me?v=1&${query}`)
+  expect(toURLQuery(params, 'https://a.me')).toBe(`https://a.me?${query}`)
 })

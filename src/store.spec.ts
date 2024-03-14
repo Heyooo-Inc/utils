@@ -19,6 +19,7 @@ test('boolean value', () => {
   store.setItem('key3', true)
 
   expect(store.getItem('key3')).toBe(true)
+  expect(store.getItem('key10')).toBe(undefined)
 })
 
 test('object value', () => {

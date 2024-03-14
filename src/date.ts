@@ -1,5 +1,5 @@
 import { toFloat } from './conv'
-import { isEmpty, isNumber } from './validate'
+import { isEmpty, isNumber } from './validator'
 
 const SECOND = 1
 const MINUTE = SECOND * 60
