@@ -89,8 +89,8 @@ export class ImATeapotError extends HttpError {
   }
 }
 
-export class InternalServerErrorError extends HttpError {
-  constructor(message = 'Internal server error', code?: string, errors?: any[], type = 'internal_server_error_error') {
+export class InternalServerError extends HttpError {
+  constructor(message = 'Internal server error', code?: string, errors?: any[], type = 'internal_server_error') {
     super(HttpError.createBody(type, message, code, errors), HttpStatus.INTERNAL_SERVER_ERROR)
   }
 }

@@ -8,7 +8,7 @@ import {
   HttpError,
   HttpVersionNotSupportedError,
   ImATeapotError,
-  InternalServerErrorError,
+  InternalServerError,
   MethodNotAllowedError,
   MisdirectedError,
   NotAcceptableError,
@@ -130,10 +130,10 @@ test('im a teapot error', () => {
 })
 
 test('internal server error', () => {
-  const json = toJSON(new InternalServerErrorError())
+  const json = toJSON(new InternalServerError())
 
   expect(json.status).toBe(500)
-  expect(json.response.type).toBe('internal_server_error_error')
+  expect(json.response.type).toBe('internal_server_error')
   expect(json.message).toBe('Internal server error')
 })
 
