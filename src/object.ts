@@ -2,7 +2,9 @@ import rfdc from 'rfdc'
 import { isArray, isNil, isObject, isPlainObject } from './validator'
 
 import merge, { Options } from 'deepmerge'
-import { getProperty, setProperty, hasProperty, deleteProperty } from 'dot-prop'
+
+// @ts-ignore
+import { getProperty, setProperty, hasProperty, deleteProperty } from './dot-prop.js'
 
 export const getObjectProperty = getProperty
 export const setObjectProperty = setProperty

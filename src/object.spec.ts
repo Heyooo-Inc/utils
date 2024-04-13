@@ -1,4 +1,13 @@
-import { deepClone, deepMerge, pickObject, excludeObject } from './'
+import {
+  deepClone,
+  deepMerge,
+  pickObject,
+  excludeObject,
+  getObjectProperty,
+  hasObjectProperty,
+  deleteObjectProperty,
+  setObjectProperty
+} from './'
 import { expect, test } from 'vitest'
 
 const obj = {
@@ -163,4 +172,22 @@ test('exclude width deep clone', () => {
   expect(excluded.array).toStrictEqual(obj.array)
   expect(excluded.object).toStrictEqual(obj.object)
   expect(excluded.number).toBe(undefined)
+})
+
+const object = { foo: { bar: 'a' } }
+
+test('object property', () => {
+  expect(getObjectProperty({ foo: { bar: 'unicorn' } }, 'foo.bar')).toBe('unicorn')
+  expect(getObjectProperty({ foo: { bar: 'a' } }, 'foo.notDefined.deep')).toBe(undefined)
+  expect(getObjectProperty({ foo: { bar: 'a' } }, 'foo.notDefined.deep', 'default value')).toBe('default value')
+  expect(getObjectProperty({ foo: { 'dot.dot': 'unicorn' } }, 'foo.dot\\.dot')).toBe('unicorn')
+  expect(getObjectProperty({ foo: [{ bar: 'unicorn' }] }, 'foo[0].bar')).toBe('unicorn')
+
+  expect(hasObjectProperty({ foo: { bar: 'unicorn' } }, 'foo.bar')).toBe(true)
+
+  setObjectProperty(object, 'foo.bar', 'b')
+  expect(object).toStrictEqual({ foo: { bar: 'b' } })
+
+  deleteObjectProperty(object, 'foo.bar')
+  expect(object).toStrictEqual({ foo: {} })
 })
